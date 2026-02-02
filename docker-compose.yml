@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: performance_managment_appraial_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Pass0rd1
+    volumes:
+      - pmas_db:/var/lib/postgresql/data
+
+volumes:
+  pmas_db:

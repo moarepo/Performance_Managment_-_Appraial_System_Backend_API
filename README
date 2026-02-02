@@ -34,10 +34,6 @@ Update requirements.txt file
  pip3 freeze > requirements.txt 
 ```
 
-Start local FastAPI server
-```sh
- uvicorn main:app --reload
-```
 
 Generate migrations file with the following command
 ```sh
