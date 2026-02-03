@@ -100,6 +100,23 @@ class Employess(Base):
     is_active = Column(Boolean,default=True,nullable=False)
     DateCreated = Column(DateTime(timezone=True), default=func.now())
 
+
+class DocumentStatuses(Base):
+    __tablename__="document_statuses_table"
+
+    status_Id = Column(
+        UUID(as_uuid=True),
+        index=True,
+        primary_key=True,
+        default=uuid.uuid4,
+        nullable=False,
+        server_default=text("gen_random_uuid()")
+    )
+    status_name = Column(String,unique=True,nullable=False)
+    is_initial_status= Column(Boolean,nullable=False)
+    is_terminal_status = Column(Boolean,nullable=False)
+    DateCreated = Column(DateTime(timezone=True), default=func.now())
+
 class PERs_table(Base):
     __tablename__="pers_table"
 
@@ -120,7 +137,7 @@ class PERs_table(Base):
     RatingOfficerComments = Column(String, nullable=True)
     DocumentShearePointLink = Column(String,nullable=False)
     DateOfSubmission = Column(DateTime(timezone=True), nullable=False)
-    ProcessingSatus = Column(UUID(as_uuid=True), nullable=False)
+    ProcessingSatus = Column(UUID(as_uuid=True), ForeignKey("document_statuses_table.status_Id"), nullable=False)
     AssignedTo = Column(UUID(as_uuid=True),ForeignKey("users.user_Id"),nullable=False)
     DateCreated = Column(DateTime(timezone=True), default=func.now())
     UpdatedAt = Column(DateTime,nullable=True)
