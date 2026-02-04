@@ -77,8 +77,8 @@ class PostGrades(Base):
     post_grade_name = Column(String,unique=True,nullable=False)
     DateCreated = Column(DateTime(timezone=True), default=func.now())
 
-class Employess(Base):
-    __tablename__="employees"
+class EmployeeTable(Base):
+    __tablename__="employee_Table"
 
     employee_Id = Column(
         UUID(as_uuid=True), 
@@ -128,7 +128,7 @@ class PERs_table(Base):
         nullable=False,
         server_default=text("gen_random_uuid()")
     )
-    employee_id = Column(UUID(as_uuid=True),ForeignKey("employees.employee_Id"),nullable=False)
+    employee_id = Column(UUID(as_uuid=True),ForeignKey("employee_Table.employee_Id"),nullable=False)
     period_of_evaluation = Column(String,nullable=False)
     performance_scores = Column(Numeric(precision=5, scale=2), nullable=True)
     pmas_scores = Column(Numeric(precision=5, scale=2), nullable=True)
@@ -140,4 +140,49 @@ class PERs_table(Base):
     ProcessingSatus = Column(UUID(as_uuid=True), ForeignKey("document_statuses_table.status_Id"), nullable=False)
     AssignedTo = Column(UUID(as_uuid=True),ForeignKey("users.user_Id"),nullable=False)
     DateCreated = Column(DateTime(timezone=True), default=func.now())
-    UpdatedAt = Column(DateTime,nullable=True)
+    UpdatedAt = Column(DateTime(timezone=True),nullable=True)
+
+
+class InterimEvaluations (Base):
+    __tablename__ = "interim_evaluation_table"
+
+    interimID =  Column(
+        UUID(as_uuid=True),
+        index=True,
+        primary_key=True,
+        default=uuid.uuid4,
+        nullable=False,
+        server_default=text("gen_random_uuid()")
+    )
+    employee_ID = Column(UUID(as_uuid=True),ForeignKey("employee_Table.employee_Id"),nullable=False)
+    period_of_evaluation = Column(String,nullable=False)
+    interim_submitted = Column(Boolean,nullable=False,default=False)
+    action_by_OD = Column(String,nullable=True)
+    document_path = Column(String,nullable=False)
+    submission_date = Column(DateTime(timezone=True),nullable=False)
+    processing_status= Column(UUID(as_uuid=True),ForeignKey("document_statuses_table.status_Id"),nullable=False)
+    assigned_to = Column(UUID(as_uuid=True),ForeignKey("users.user_Id"),nullable=False)
+    DateCreated = Column(DateTime(timezone=True), default=func.now())
+    UpdatedAt = Column(DateTime(timezone=True),nullable=True)
+
+
+class WorkPlans(Base):
+    __tablename__="work_plan_table"
+
+    work_plan_id = Column(
+        UUID(as_uuid=True),
+        index=True,
+        primary_key=True,
+        default=uuid.uuid4,
+        nullable=False,
+        server_default=text("gen_random_uuid()")
+    )
+    employee_ID = Column(UUID(as_uuid=True),ForeignKey("employee_Table.employee_Id"),nullable=False)
+    period_of_work_plan = Column(String,nullable=False)
+    work_plan_submited = Column(Boolean,nullable=False,default=False)
+    document_path = Column(String,nullable=False)
+    submission_date = Column(DateTime(timezone=True),nullable=False)
+    processing_status= Column(UUID(as_uuid=True),ForeignKey("document_statuses_table.status_Id"),nullable=False)
+    assigned_to = Column(UUID(as_uuid=True),ForeignKey("users.user_Id"),nullable=False)
+    DateCreated = Column(DateTime(timezone=True), default=func.now())
+    UpdatedAt = Column(DateTime(timezone=True),nullable=True)
